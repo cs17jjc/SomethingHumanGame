@@ -90,7 +90,7 @@ class MainGame
       if (r.y > Width)
       {
         WarpPlasma.remove(i);
-      } else if (Intersects((int)r.x, (int)r.y, 20, 20, (int)pos.x, (int)pos.y, 26, 45))
+      } else if (Intersects((int)r.x, (int)r.y, 20, 20, (int)pos.x, (int)(pos.y - yOff), 26, 45))
       {
         WarpPlasma.remove(i);
         IncLights();
@@ -140,7 +140,7 @@ class MainGame
 
 
     imageMode(CENTER);
-    translate(pos.x, pos.y - yOff);
+    translate(pos.x, pos.y - yOff,1);
 
     //Check Keys array
     if (Keys[0])// key a
@@ -157,18 +157,18 @@ class MainGame
     {
       amt += amt+0.1 <= 1 ? 0.1:0;
       Speed = lerp(10, 20, amt);
-      yOff = (int)lerp(-40, 30, amt);
+      yOff = (int)lerp(-70, 30, amt);
     } else
     {
       amt -= amt-0.02 >= 0 ? 0.02:0;
       Speed = lerp(10, 20, amt);
-      yOff = (int)lerp(-40, 30, amt);
+      yOff = (int)lerp(-70, 30, amt);
     }
     if (Keys[3])// key s
     {
       amt -= amt-0.1 >= 0 ? 0.1:0;
       Speed = lerp(10, 20, amt);
-      yOff = (int)lerp(-40, 30, amt);
+      yOff = (int)lerp(-70, 30, amt);
     }
 
 
