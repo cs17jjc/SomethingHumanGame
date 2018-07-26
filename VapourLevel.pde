@@ -4,7 +4,7 @@ class VapourLevel
   int scl = 20;
   int w = 2000;
   int h = 1600;
-
+  boolean[] Keys = new boolean[4];
   float flying = 0;
 
   float[][] terrain;
@@ -12,12 +12,14 @@ class VapourLevel
   PImage CarBack;
 
   PVector CarSize = new PVector(80, 48);
-  
+  PVector CarPos = new PVector(0,0);
+
   void setup() {
     cols = w / scl;
     rows = h/ scl;
     terrain = new float[cols][rows];
     CarBack = loadImage(dataPath("CarBackRet.png"));
+    ChangeCarSize(20);
   }
 
 
@@ -75,9 +77,20 @@ class VapourLevel
     }
     popMatrix();
     pushMatrix();
-    translate(width/2, (height - CarBack.height*2) + CarSize.y/2);
-    DrawImge3D(CarBack, 0, 0, 300, (int)CarSize.x, (int)CarSize.y);
+    translate(width/2, height - CarSize.y);
+    DrawImge3D(CarBack, (int)CarPos.x, (int)CarPos.y, 300, (int)CarSize.x, (int)CarSize.y);
     popMatrix();
+    
+    
+    if (Keys[0])// key a
+    {
+      CarPos.x -= 3;
+    }
+    if (Keys[1])// key d
+    {
+      CarPos.x += 3;
+    }
+    
   }
 
 
@@ -87,6 +100,24 @@ class VapourLevel
     //h = (w*68)/113
     CarSize.y = (w*68)/113;
     CarSize.x = w;
+  }
+  boolean setMove(int k, boolean b) {
+    switch (k) {
+    case 'w':
+      return Keys[2] = b;
+
+    case 's':
+      return Keys[3] = b;
+
+    case 'a':
+      return Keys[0] = b;
+
+    case 'd':
+      return Keys[1] = b;
+
+    default:
+      return b;
+    }
   }
 }
 

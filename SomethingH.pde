@@ -13,7 +13,7 @@ void setup()
   MG.setup();
   VL.setup();
   music = new SoundFile(this,dataPath("SH8.mp3"));
-  music.play(1,0.3);
+  music.play(1,0.02);
 }
 
 
@@ -39,11 +39,19 @@ void keyPressed() {
   {
   MG.setMove(key, true);
   }
+  else
+  {
+    VL.setMove(key, true);
+  }
 }
 
 void keyReleased() {
   if(MGOn)
   {
   MG.setMove(key, false);
+  }
+  else
+  {
+    VL.setMove(key, false);
   }
 }

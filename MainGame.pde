@@ -52,7 +52,7 @@ class MainGame
     background(250, 180, 50);
     fill(0);
     rect((Width/2) - (RoadWidth/2), 0, RoadWidth, Height);
-    DrawInterfaces((int)lerp(50, 93, amt), Lights);
+    DrawInterfaces((int)lerp(50, 88, amt), Lights);
 
     // Move,Draw and Delete rocks
     for (int i = Rocks.size()-1; i >=0; i--)
@@ -156,17 +156,20 @@ class MainGame
     if (Keys[2])// key w
     {
       amt += amt+0.1 <= 1 ? 0.1:0;
+      if(amt+0.1 > 1.0) amt = 1;
       Speed = lerp(10, 20, amt);
       yOff = (int)lerp(-70, 30, amt);
     } else
     {
       amt -= amt-0.02 >= 0 ? 0.02:0;
+      if(amt < 0.0) amt = 0;
       Speed = lerp(10, 20, amt);
       yOff = (int)lerp(-70, 30, amt);
     }
     if (Keys[3])// key s
     {
       amt -= amt-0.1 >= 0 ? 0.1:0;
+      if(amt < 0.0) amt = 0;
       Speed = lerp(10, 20, amt);
       yOff = (int)lerp(-70, 30, amt);
     }
