@@ -32,7 +32,7 @@ void mousePressed()
 {
   if(MGOn)
   {
-   MG.mouseClick(mouseButton,this); 
+   MG.mouseClick(mouseButton,this); //Need to pass refrence to this to chage MGOn
   }
 }
 

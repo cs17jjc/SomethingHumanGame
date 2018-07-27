@@ -3,6 +3,7 @@
 class MainGame
 {
   int RoadWidth = 100;
+  //TODO Possibly store images in array
   PImage car;
   PImage WD;
   PImage SPD;
@@ -41,6 +42,7 @@ class MainGame
   void setup()
   {
     pos = new PVector(Width/2, Height/2);
+    //Load assets, should probs put this in initiliser 
     car = loadImage("CarWIP.png");
     WD = loadImage("WDTemp.png");
     rock = loadImage("Rock.png");
@@ -61,8 +63,8 @@ class MainGame
   {
     background(250, 180, 50);
     fill(0);
-    rect((Width/2) - (RoadWidth/2), 0, RoadWidth, Height);
-    DrawInterfaces((int)lerp(50, 88, amt), Lights, LightCount, MaxPlasmas, SpeedCount, WarpMessage);
+    rect((Width/2) - (RoadWidth/2), 0, RoadWidth, Height);//draw road
+    DrawInterfaces((int)lerp(50, 88, amt), Lights, LightCount, MaxPlasmas, SpeedCount, WarpMessage);//draw UI stuff
 
     // Move,Draw and Delete rocks
     for (int i = Rocks.size()-1; i >=0; i--)
@@ -150,7 +152,7 @@ class MainGame
 
     pushMatrix();
     imageMode(CENTER);
-    translate(pos.x, pos.y - yOff - car.height, 1);
+    translate(pos.x, pos.y - yOff - car.height, 1);//translate to car pos
 
     //Check Keys array
     if (Keys[0])// key a

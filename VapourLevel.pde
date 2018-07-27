@@ -28,8 +28,8 @@ class VapourLevel
   void draw() {
     background(0);
     
-    flying -= 0.1;
-
+    //generate perlin noise stuff
+    flying -= 0.1;//inc perlin counter
     float yoff = flying;
     for (int y = 0; y < rows; y++) {
       float xoff = 0;
@@ -48,7 +48,7 @@ class VapourLevel
     noFill();
 
 
-
+    //render perlin feild
     pushMatrix();
     translate(width/2, height/2+50);
     rotateX(PI/2);
@@ -56,8 +56,6 @@ class VapourLevel
     fill(100);
     //rect((cols*20)/2 - 45, 0, 90, rows * 20);
     noFill();
-
-
     for (int y = 0; y < rows-1; y++) {
 
       beginShape(TRIANGLE_STRIP);
@@ -79,6 +77,7 @@ class VapourLevel
       endShape();
     }
     popMatrix();
+    //draw car
     pushMatrix();
     translate(width/2, height/2 + CarSize.y,85);
     DrawImage3D(CarBack, (int)CarPos.x, (int)CarPos.y, 300, (int)CarSize.x, (int)CarSize.y);
@@ -134,6 +133,7 @@ int ColourConv(float i, int max)
 
 void DrawImage3D(PImage img, int x, int y, int z, int w, int h)
 {
+  //need to draw as shape to set z pos
   int xC = x - w/2;//x Centered
   noStroke();
   beginShape();
