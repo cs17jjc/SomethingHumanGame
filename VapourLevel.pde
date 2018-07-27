@@ -10,6 +10,7 @@ class VapourLevel
   float[][] terrain;
 
   PImage CarBack;
+  PImage BG;
 
   PVector CarSize = new PVector(80, 48);
   PVector CarPos = new PVector(0,0);
@@ -19,12 +20,14 @@ class VapourLevel
     rows = h/ scl;
     terrain = new float[cols][rows];
     CarBack = loadImage(dataPath("CarBackRet.png"));
-    ChangeCarSize(20);
+    //BG = loadImage(dataPath("VLBack.png"));
+    ChangeCarSize(15);
   }
 
 
   void draw() {
-
+    background(0);
+    
     flying -= 0.1;
 
     float yoff = flying;
@@ -41,7 +44,7 @@ class VapourLevel
 
 
 
-    background(0);
+    
     noFill();
 
 
@@ -77,18 +80,18 @@ class VapourLevel
     }
     popMatrix();
     pushMatrix();
-    translate(width/2, height - CarSize.y);
-    DrawImge3D(CarBack, (int)CarPos.x, (int)CarPos.y, 300, (int)CarSize.x, (int)CarSize.y);
+    translate(width/2, height/2 + CarSize.y,85);
+    DrawImage3D(CarBack, (int)CarPos.x, (int)CarPos.y, 300, (int)CarSize.x, (int)CarSize.y);
     popMatrix();
     
     
     if (Keys[0])// key a
     {
-      CarPos.x -= 3;
+      CarPos.x -= CarPos.x > -15 ? 3:0;
     }
     if (Keys[1])// key d
     {
-      CarPos.x += 3;
+      CarPos.x += CarPos.x < 15 ? 3:0;
     }
     
   }
@@ -129,7 +132,7 @@ int ColourConv(float i, int max)
   return (int)lerp(0, 255, (float)i/(float)max);
 }
 
-void DrawImge3D(PImage img, int x, int y, int z, int w, int h)
+void DrawImage3D(PImage img, int x, int y, int z, int w, int h)
 {
   int xC = x - w/2;//x Centered
   noStroke();

@@ -23,14 +23,24 @@ class MainGame
   int Height = 500;
   int LinesCount;
   int LightCount = 0;
+  int MaxPlasmas = 50;
+  float SpeedCount = 0;
+  float SpeedInc = 0.1;
   int CurLight = 0;
   boolean[] Keys = new boolean[4];
   boolean[] Lights = new boolean[9];
+  String WarpMessage = "";
+
+  MainGame(int Width)
+  {
+    this.Width = Width;
+    this.Height = Width;
+  }
 
 
   void setup()
   {
-    pos = new PVector(Width/2, Height/3);
+    pos = new PVector(Width/2, Height/2);
     car = loadImage("CarWIP.png");
     WD = loadImage("WDTemp.png");
     rock = loadImage("Rock.png");
@@ -52,7 +62,7 @@ class MainGame
     background(250, 180, 50);
     fill(0);
     rect((Width/2) - (RoadWidth/2), 0, RoadWidth, Height);
-    DrawInterfaces((int)lerp(50, 88, amt), Lights);
+    DrawInterfaces((int)lerp(50, 88, amt), Lights, LightCount, MaxPlasmas, SpeedCount, WarpMessage);
 
     // Move,Draw and Delete rocks
     for (int i = Rocks.size()-1; i >=0; i--)
@@ -138,9 +148,9 @@ class MainGame
     }
 
 
-
+    pushMatrix();
     imageMode(CENTER);
-    translate(pos.x, pos.y - yOff,1);
+    translate(pos.x, pos.y - yOff - car.height, 1);
 
     //Check Keys array
     if (Keys[0])// key a
@@ -156,43 +166,90 @@ class MainGame
     if (Keys[2])// key w
     {
       amt += amt+0.1 <= 1 ? 0.1:0;
-      if(amt+0.1 > 1.0) amt = 1;
+      if (amt+0.1 > 1.0) amt = 1;
       Speed = lerp(10, 20, amt);
-      yOff = (int)lerp(-70, 30, amt);
+      yOff = (int)lerp(0, height/4, amt);
     } else
     {
       amt -= amt-0.02 >= 0 ? 0.02:0;
-      if(amt < 0.0) amt = 0;
+      if (amt < 0.0) amt = 0;
       Speed = lerp(10, 20, amt);
-      yOff = (int)lerp(-70, 30, amt);
+      yOff = (int)lerp(0, height/4, amt);
     }
     if (Keys[3])// key s
     {
       amt -= amt-0.1 >= 0 ? 0.1:0;
-      if(amt < 0.0) amt = 0;
+      if (amt < 0.0) amt = 0;
       Speed = lerp(10, 20, amt);
-      yOff = (int)lerp(-70, 30, amt);
+      yOff = (int)lerp(0, height/4, amt);
     }
 
 
     image(car, 0, 0);
+    popMatrix();
+
+    if (LightCount >= MaxPlasmas)
+    {
+      if ((int)lerp(50, 88, amt) == 88)
+      {
+        if (SpeedCount < 100)
+        {
+          WarpMessage = "Keep At 88";
+          if (SpeedCount + SpeedInc > 100)
+          {
+            SpeedCount = 100;
+          } else
+          {
+            SpeedCount += SpeedInc;
+          }
+        } else
+        {
+          WarpMessage = "WARP";
+        }
+      } else
+      {
+        if (SpeedCount >= 0)
+        {
+          WarpMessage = "Speed Up";
+          if (SpeedCount - SpeedInc < 0)
+          {
+            SpeedCount = 0;
+          } else
+          {
+            SpeedCount -= SpeedInc;
+          }
+        }
+      }
+    } else
+    {
+      WarpMessage = "Need More Plasma";
+    }
+  }
+
+  void mouseClick(int Button, SomethingH Parent)
+  {
+    println("clicked");
+    if (Button == LEFT)
+    {
+      if (Intersects(mouseX, mouseY, 1, 1, Width + 16, height-WD.height + 87, 170, 100))
+      {
+        //warp drive clicked
+        println("Warp Drive Clicked");
+        if (LightCount >= MaxPlasmas)
+        {
+          Parent.MGOn = false;
+        }
+      }
+    }
   }
 
   boolean Intersects(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2)
   {
-    if (x1 > x2 && x1 < x2 + w2)
+
+    if (x1 > x2 && x1 < x2 + w2 || x1+w1 > x2 && x1+w1 < x2+w2)
     {
-      if (y1 > y2 && y1 < y2 + h2)
+      if (y1 > y2 && y1 < y2+h2 || y1+h1 > y2 && y1+h1 < y2+h2)
       {
-        //x1y1 is in x2y2
-        return true;
-      }
-    }
-    if (x1 + w1 > x2 && x2 + w2 > x1)
-    {
-      if (y1 + h1 > y2 && y2 + h2 > y1)
-      {
-        //Intersection
         return true;
       }
     }
@@ -236,7 +293,7 @@ class MainGame
     }
   }
 
-  void DrawInterfaces(int Speed, boolean[] SPDLights)
+  void DrawInterfaces(int Speed, boolean[] SPDLights, int PlasmaCount, int MaxPlasma, float SpeedCount, String WarpMessage)
   {
     rect(Width, 0, width-Width, height);
     image(WD, width - WD.height/2, height-WD.height/2);
@@ -246,9 +303,46 @@ class MainGame
     fill(255, 0, 0);
     textFont(SegF);
     text(Speed + "mph", Width + 20, 53);
+    fill(0, 255, 0);
+    textSize(9);
+    text("Plasma Count: " + PlasmaCount, Width + 22, 106);
+    text("Plasma Needed: " + MaxPlasma, Width + 22, 131);
+
+    if (WarpMessage != "WARP")
+    {
+      textSize(25);
+      int LineSpace = 0;
+      String[] MsgSplit = WarpMessage.split(" ");
+      for (String s : MsgSplit)
+      {
+        text(s, Width+20, height-85+LineSpace);
+        LineSpace += 30;
+      }
+    } else
+    {
+      if (Intersects(mouseX, mouseY, 1, 1, Width + 16, height-WD.height + 87, 170, 100))
+      {
+        fill(255,0,0);
+      }
+      else
+      {
+       fill(0,255,0); 
+      }
+      textSize(40);
+      text(WarpMessage,Width+37,height-45);
+    }
+
+
     for (int i = 0; i < 9; i++)
     {
-      if (SPDLights[i] == true)
+      if (SpeedCount < (100/9)*i)
+      {
+        image(LightR, Width + 22  + (i*20), height-130);
+      } else
+      {
+        image(LightG, Width + 22 + (i*20), height-130);
+      }
+      if (SPDLights[i] == true || PlasmaCount >= MaxPlasma)
       {
         image(LightG, Width + 20  + (i*20), 80);
       } else
