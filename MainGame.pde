@@ -102,14 +102,16 @@ class MainGame
       if (r.y > Width)
       {
         WarpPlasma.remove(i);
-      } else if (Intersects((int)r.x, (int)r.y, 20, 20, (int)pos.x, (int)(pos.y - yOff), 26, 45))
+      } else if (Intersects((int)r.x-WP.width/2 + 3 , (int)r.y-WP.width/2 + 3, 20-6, 20-6, (int)pos.x - car.width/2, (int)(pos.y - yOff - car.height*1.5), 26, 45))
       {
         WarpPlasma.remove(i);
         IncLights();
       } else
       {
-        rectMode(CENTER);
-        fill(255, 0, 255);
+        rectMode(CORNER);
+        imageMode(CENTER);
+        //fill(255, 0, 255);
+        //rect((int)r.x-WP.width/2 + 3 , (int)r.y-WP.width/2 + 3, 20-6, 20-6);
         image(WP, r.x, r.y, 20, 20);
         r.y += Speed;
         WarpPlasma.set(i, r);
@@ -151,6 +153,8 @@ class MainGame
 
 
     pushMatrix();
+    //rectMode(CORNER);
+    //rect((int)pos.x - car.width/2, pos.y - yOff - car.height*1.5, 26, 45); //Used for showing bounding box
     imageMode(CENTER);
     translate(pos.x, pos.y - yOff - car.height, 1);//translate to car pos
 
@@ -158,12 +162,26 @@ class MainGame
     if (Keys[0])// key a
     {
       pos.x -= (int)lerp(3, 6, amt);
+      if(pos.x <= car.width)
+      {
+       pos.x = car.width; 
+      }
+      else
+      {
       rotate(-HALF_PI/4);
+      }
     }
     if (Keys[1])// key d
     {
       pos.x += (int)lerp(3, 6, amt);
+      if(pos.x >= Width-car.width)
+      {
+       pos.x = Width-car.width; 
+      }
+      else
+      {
       rotate(HALF_PI/4);
+      }
     }
     if (Keys[2])// key w
     {
@@ -188,7 +206,9 @@ class MainGame
 
 
     image(car, 0, 0);
+    
     popMatrix();
+    
 
     if (LightCount >= MaxPlasmas)
     {

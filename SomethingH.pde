@@ -10,10 +10,11 @@ boolean MGOn = true;
 void setup()
 {
   size(840, 600, P3D);
+  surface.setResizable(false);
   MG.setup();
   VL.setup();
   music = new SoundFile(this, dataPath("SH8.mp3"));
-  music.loop(1,0.01);
+  music.loop(1,0.5);
 }
 
 
