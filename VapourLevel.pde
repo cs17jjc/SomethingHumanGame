@@ -10,26 +10,64 @@ class VapourLevel
   float[][] terrain;
 
   PImage CarBack;
-  PImage BG;
+  PImage CarHull;
+  PImage UpgradeUI;
 
   PVector CarSize = new PVector(80, 48);
-  PVector CarPos = new PVector(0,0);
-
+  PVector CarPos = new PVector(0, 0);
+  PVector UILCDMiddle = new PVector(169, 73);
+  PVector UILCDSize = new PVector(288, 96);
   void setup() {
     cols = w / scl;
     rows = h/ scl;
     terrain = new float[cols][rows];
     CarBack = loadImage(dataPath("CarBackRet.png"));
-    //BG = loadImage(dataPath("VLBack.png"));
+    CarHull = loadImage(dataPath("CarMesh_hull.png"));
+    UpgradeUI = loadImage(dataPath("UpgradeUI.png"));
     ChangeCarSize(15);
   }
 
 
   void draw() {
     background(0);
-    
+    DrawPerlin();
+    //draw car
+    pushMatrix();
+    translate(width/2, height/2 + CarSize.y, 85);
+    DrawImage3D(CarBack, (int)CarPos.x, (int)CarPos.y, 300, (int)CarSize.x, (int)CarSize.y);
+    popMatrix();
+    //draw upgrade stuff
+    image(UpgradeUI, 0, 0);
+    imageMode(CENTER);
+    DrawCarPart("HULL");
+    imageMode(CORNER);
+  }
+
+  void DrawCarPart(String Opt1)
+  {
+    switch(Opt1)
+    {
+    case "HULL":
+      image(CarHull, UILCDMiddle.x, UILCDMiddle.y, 276, 64);
+      break;
+    }
+  }
+
+
+  void ChangeCarSize(float w)
+  {
+    //Original size 226 by 136 = 113 : 68 
+    //h = (w*68)/113
+    CarSize.y = (w*68)/113;
+    CarSize.x = w;
+  }
+
+  void DrawPerlin()
+  {
     //generate perlin noise stuff
-    flying -= 0.1;//inc perlin counter
+    //float ff = 1.0/( (float)mouseY +1.0);
+    //println(ff);
+    flying -= 0.2;//inc perlin counter
     float yoff = flying;
     for (int y = 0; y < rows; y++) {
       float xoff = 0;
@@ -42,12 +80,7 @@ class VapourLevel
       yoff += 0.2;
     }
 
-
-
-    
     noFill();
-
-
     //render perlin feild
     pushMatrix();
     translate(width/2, height/2+50);
@@ -63,9 +96,8 @@ class VapourLevel
         stroke(ColourConv(terrain[x][y], 1)-50, 0, ColourConv(terrain[x][y], 1));
         if (x >= (cols/2) + 4 || x <= (cols/2) - 4)
         {
-
-          vertex(x*scl, y*scl, lerp(-100, 100, terrain[x][y]));
-          vertex(x*scl, (y+1)*scl, lerp(-100, 100, terrain[x][y]));
+          vertex(x*scl, y*scl, lerp(-100, 90, terrain[x][y]));
+          vertex(x*scl, (y+1)*scl, lerp(-100, 90, terrain[x][y]));
           //rect(x*scl, y*scl, scl, scl);
         } else
         {
@@ -77,51 +109,9 @@ class VapourLevel
       endShape();
     }
     popMatrix();
-    //draw car
-    pushMatrix();
-    translate(width/2, height/2 + CarSize.y,85);
-    DrawImage3D(CarBack, (int)CarPos.x, (int)CarPos.y, 300, (int)CarSize.x, (int)CarSize.y);
-    popMatrix();
-    
-    
-    if (Keys[0])// key a
-    {
-      CarPos.x -= CarPos.x > -15 ? 3:0;
-    }
-    if (Keys[1])// key d
-    {
-      CarPos.x += CarPos.x < 15 ? 3:0;
-    }
-    
-  }
-
-
-  void ChangeCarSize(float w)
-  {
-    //Original size 226 by 136 = 113 : 68 
-    //h = (w*68)/113
-    CarSize.y = (w*68)/113;
-    CarSize.x = w;
-  }
-  boolean setMove(int k, boolean b) {
-    switch (k) {
-    case 'w':
-      return Keys[2] = b;
-
-    case 's':
-      return Keys[3] = b;
-
-    case 'a':
-      return Keys[0] = b;
-
-    case 'd':
-      return Keys[1] = b;
-
-    default:
-      return b;
-    }
   }
 }
+
 
 
 

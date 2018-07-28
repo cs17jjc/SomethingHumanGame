@@ -5,7 +5,7 @@ MainGame MG = new MainGame(640);
 VapourLevel VL = new VapourLevel();
 SoundFile music;
 
-boolean MGOn = true;
+boolean MGOn = false;
 
 void setup()
 {
@@ -41,9 +41,6 @@ void keyPressed() {
   if (MGOn)
   {
     MG.setMove(key, true);
-  } else
-  {
-    VL.setMove(key, true);
   }
 }
 
@@ -51,8 +48,5 @@ void keyReleased() {
   if (MGOn)
   {
     MG.setMove(key, false);
-  } else
-  {
-    VL.setMove(key, false);
   }
 }
