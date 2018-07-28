@@ -10,21 +10,39 @@ class VapourLevel
   float[][] terrain;
 
   PImage CarBack;
-  PImage CarHull;
   PImage UpgradeUI;
+  PImage[] Buttons = new PImage[6];
+  PImage[] Icons = new PImage[6];
+  PImage[] Lights = new PImage[2];
 
   PVector CarSize = new PVector(80, 48);
   PVector CarPos = new PVector(0, 0);
   PVector UILCDMiddle = new PVector(169, 73);
   PVector UILCDSize = new PVector(288, 96);
+
+  int SelectedButton = 0;
+
   void setup() {
     cols = w / scl;
     rows = h/ scl;
     terrain = new float[cols][rows];
     CarBack = loadImage(dataPath("CarBackRet.png"));
-    CarHull = loadImage(dataPath("CarMesh_hull.png"));
     UpgradeUI = loadImage(dataPath("UpgradeUI.png"));
+    Lights[0] = loadImage(dataPath("SPDLiG.png"));
+    Lights[1] = loadImage(dataPath("SPDLiR.png"));
     ChangeCarSize(15);
+    File folder = new File(dataPath("Buttons"));
+    String[] fileNames = folder.list();
+    for (int i = 0; i < fileNames.length; i++) 
+    {
+      Buttons[i] = loadImage(folder.getPath() +"\\"+ fileNames[i]);
+    }
+    folder = new File(dataPath("Mesh"));
+    fileNames = folder.list();
+    for (int i = 0; i < fileNames.length; i++) 
+    {
+      Icons[i] = loadImage(folder.getPath() +"\\"+ fileNames[i]);
+    }
   }
 
 
@@ -39,16 +57,84 @@ class VapourLevel
     //draw upgrade stuff
     image(UpgradeUI, 0, 0);
     imageMode(CENTER);
-    DrawCarPart("HULL");
+    DrawCarPart(SelectedButton);
     imageMode(CORNER);
+
+    PVector ButtonPos = new PVector(25, 135);
+    for (int i =0; i<Buttons.length; i++)
+    {
+      image(Buttons[i], ButtonPos.x, ButtonPos.y, 70, 23);
+      pushMatrix();
+      translate(70+25 + 15, ButtonPos.y + 23/2);
+      imageMode(CENTER);
+      if (SelectedButton == i)
+      {
+        image(Lights[0], 0, 0);
+      } else
+      {
+        image(Lights[1], 0, 0);
+      }
+      imageMode(CORNER);
+      popMatrix();
+
+      ButtonPos.y += 25;
+    }
   }
 
-  void DrawCarPart(String Opt1)
+
+  void mouseClick(int Button, SomethingH Parent)
+  {
+    if (Button == LEFT)
+    {
+      PVector ButtonPos = new PVector(25, 135);
+      for (int i =0; i<Buttons.length; i++)
+      {
+        if (Intersects(mouseX, mouseY, 1, 1, (int)ButtonPos.x, (int)ButtonPos.y, 70, 23))
+        {
+          SelectedButton = i;
+          i = Buttons.length;
+        } else
+        {
+          ButtonPos.y += 25;
+        }
+      }
+    }
+  }
+
+  boolean Intersects(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2)
+  {
+
+    if (x1 > x2 && x1 < x2 + w2 || x1+w1 > x2 && x1+w1 < x2+w2)
+    {
+      if (y1 > y2 && y1 < y2+h2 || y1+h1 > y2 && y1+h1 < y2+h2)
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void DrawCarPart(int Opt1)
   {
     switch(Opt1)
     {
-    case "HULL":
-      image(CarHull, UILCDMiddle.x, UILCDMiddle.y, 276, 64);
+    case 0:
+      image(Icons[0], UILCDMiddle.x, UILCDMiddle.y, 276, 64);
+      break;
+    case 1:
+      image(Icons[1], UILCDMiddle.x, UILCDMiddle.y, 132, 64);
+      break;
+    case 2:
+      image(Icons[2], UILCDMiddle.x, UILCDMiddle.y, 271 * 0.3, 269*0.3);
+      break;
+    case 3:
+      image(Icons[3], UILCDMiddle.x, UILCDMiddle.y, 276*0.7, 134*0.7);
+      break;
+    case 4:
+      image(Icons[4], UILCDMiddle.x, UILCDMiddle.y, 85, 85);
+      break;
+    case 5:
+      image(Icons[5], UILCDMiddle.x, UILCDMiddle.y, 70, 70);
       break;
     }
   }

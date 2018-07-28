@@ -1,5 +1,3 @@
-
-
 class MainGame
 {
   int RoadWidth = 100;

@@ -14,7 +14,7 @@ void setup()
   MG.setup();
   VL.setup();
   music = new SoundFile(this, dataPath("SH8.mp3"));
-  music.loop(1,0.5);
+  //music.loop(1,0.5);
 }
 
 
@@ -34,6 +34,10 @@ void mousePressed()
   if(MGOn)
   {
    MG.mouseClick(mouseButton,this); //Need to pass refrence to this to chage MGOn
+  }
+  else
+  {
+   VL.mouseClick(mouseButton,this); 
   }
 }
 
