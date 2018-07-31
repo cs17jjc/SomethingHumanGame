@@ -48,13 +48,13 @@ class VapourLevel
     String[] fileNames = folder.list();
     for (int i = 0; i < fileNames.length; i++) 
     {
-      Buttons[i] = loadImage(folder.getPath() +"\\"+ fileNames[i]);
+      Buttons[i] = loadImage(folder.getPath() +"/"+ fileNames[i]);
     }
     folder = new File(dataPath("Mesh"));
     fileNames = folder.list();
     for (int i = 0; i < fileNames.length; i++) 
     {
-      Icons[i] = loadImage(folder.getPath() +"\\"+ fileNames[i]);
+      Icons[i] = loadImage(folder.getPath() +"/"+ fileNames[i]);
     }
   }
 

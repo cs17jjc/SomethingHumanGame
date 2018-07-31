@@ -1,9 +1,9 @@
-import processing.sound.*;
+//import processing.sound.*;
 
 
 MainGame MG = new MainGame(640);
 VapourLevel VL = new VapourLevel();
-SoundFile music;
+//SoundFile music;
 
 boolean MGOn = false;
 boolean VLDone = false;
@@ -14,8 +14,8 @@ void setup()
   surface.setResizable(false);
   MG.setup();
   VL.setup();
-  music = new SoundFile(this, dataPath("SH8.mp3"));
-  music.loop(1,0.5);
+  //music = new SoundFile(this, dataPath("SH8.mp3"));
+  //music.loop(1,0.5);
 }
 
 
