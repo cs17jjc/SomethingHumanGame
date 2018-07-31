@@ -22,11 +22,11 @@ class MainGame
   int Height = 500;
   int LinesCount;
   int LightCount = 0;
-  int MaxPlasmas = 50;
+  int MaxPlasmas = 1;
   float SpeedCount = 0;
-  float SpeedInc = 0.1;
+  float SpeedInc = 1;
   int CurLight = 0;
-  boolean[] Keys = new boolean[4];
+  boolean[] Keys = new boolean[5];
   boolean[] Lights = new boolean[9];
   String WarpMessage = "";
 
@@ -159,7 +159,7 @@ class MainGame
     //Check Keys array
     if (Keys[0])// key a
     {
-      pos.x -= (int)lerp(3, 6, amt);
+      pos.x -= (int)lerp(4, 6, amt);
       if(pos.x <= car.width)
       {
        pos.x = car.width; 
@@ -171,7 +171,7 @@ class MainGame
     }
     if (Keys[1])// key d
     {
-      pos.x += (int)lerp(3, 6, amt);
+      pos.x += (int)lerp(4, 6, amt);
       if(pos.x >= Width-car.width)
       {
        pos.x = Width-car.width; 
@@ -307,6 +307,10 @@ class MainGame
 
     case 'd':
       return Keys[1] = b;
+	  
+    case ESC:
+             key = 0;
+      return Keys[4] = b;
 
     default:
       return b;
@@ -371,4 +375,20 @@ class MainGame
       }
     }
   }
-}
+
+  void reset()
+  {
+	  amt = 0;
+	  Speed = 10;
+	  pos = new PVector(Width/2, Height/2);
+	  LinesCount = 0;
+	  LightCount = 0;
+	  SpeedCount = 0;
+	  SpeedInc = 0.1;
+	  CurLight = 0;
+	  Lights = new boolean[9];
+    Keys = new boolean[5];
+	  WarpMessage = "";
+  }
+  
+  }

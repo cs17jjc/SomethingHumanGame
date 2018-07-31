@@ -11,16 +11,19 @@ class VapourLevel
 
   PImage CarBack;
   PImage UpgradeUI;
-  PImage[] Buttons = new PImage[6];
+  PImage VU;
+  PImage[] Buttons = new PImage[7];
   PImage[] Icons = new PImage[6];
   PImage[] Lights = new PImage[2];
 
+  ArrayList<PVector> VUP = new ArrayList<PVector>();;
   PVector CarSize = new PVector(80, 48);
   PVector CarPos = new PVector(0, 0);
   PVector UILCDMiddle = new PVector(169, 73);
   PVector UILCDSize = new PVector(288, 96);
 
   int SelectedButton = 0;
+  int CurP = 0;
 
   void setup() {
     cols = w / scl;
@@ -28,8 +31,10 @@ class VapourLevel
     terrain = new float[cols][rows];
     CarBack = loadImage(dataPath("CarBackRet.png"));
     UpgradeUI = loadImage(dataPath("UpgradeUI.png"));
+    VU = loadImage(dataPath("VUM.png"));
     Lights[0] = loadImage(dataPath("SPDLiG.png"));
     Lights[1] = loadImage(dataPath("SPDLiR.png"));
+    AddPoints();
     ChangeCarSize(15);
     File folder = new File(dataPath("Buttons"));
     String[] fileNames = folder.list();
@@ -61,7 +66,7 @@ class VapourLevel
     imageMode(CORNER);
 
     PVector ButtonPos = new PVector(25, 135);
-    for (int i =0; i<Buttons.length; i++)
+    for (int i =0; i<Buttons.length-1; i++)
     {
       image(Buttons[i], ButtonPos.x, ButtonPos.y, 70, 23);
       pushMatrix();
@@ -79,6 +84,13 @@ class VapourLevel
 
       ButtonPos.y += 25;
     }
+    PVector DoneSize = new PVector(70*2.5, 23*2.5);
+    image(Buttons[6], width- DoneSize.x - 8, height/2 - DoneSize.y - 8, DoneSize.x, DoneSize.y);
+    
+    image(VU,100,100);
+    stroke(255,0,0);
+    line(100 + 100,109 + 100,VUP.get(CurP).x + 100,VUP.get(CurP).y+100);
+    
   }
 
 
@@ -86,8 +98,10 @@ class VapourLevel
   {
     if (Button == LEFT)
     {
+      CurP += CurP < VUP.size()-1 ? 1 : -CurP;
+      println(CurP);
       PVector ButtonPos = new PVector(25, 135);
-      for (int i =0; i<Buttons.length; i++)
+      for (int i =0; i<Buttons.length-1; i++)
       {
         if (Intersects(mouseX, mouseY, 1, 1, (int)ButtonPos.x, (int)ButtonPos.y, 70, 23))
         {
@@ -97,6 +111,12 @@ class VapourLevel
         {
           ButtonPos.y += 25;
         }
+      }
+      PVector DoneSize = new PVector(70*2.5, 23*2.5);
+      if (Intersects(mouseX, mouseY, 1, 1, (int)(width- DoneSize.x - 8), (int)(height/2 - DoneSize.y - 8), (int)DoneSize.x, (int)DoneSize.y))
+      {
+        //Done with upgrades
+        Parent.MGOn = true;
       }
     }
   }
@@ -196,6 +216,18 @@ class VapourLevel
     }
     popMatrix();
   }
+  
+  void AddPoints()
+  {
+   VUP.add(new PVector(41,51));
+   VUP.add(new PVector(58,38)); 
+   VUP.add(new PVector(77,29)); 
+   VUP.add(new PVector(100,26)); 
+   VUP.add(new PVector(123,29)); 
+   VUP.add(new PVector(142,38)); 
+   VUP.add(new PVector(159,51)); 
+  }
+  
 }
 
 

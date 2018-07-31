@@ -6,6 +6,7 @@ VapourLevel VL = new VapourLevel();
 SoundFile music;
 
 boolean MGOn = false;
+boolean VLDone = false;
 
 void setup()
 {
@@ -34,10 +35,14 @@ void mousePressed()
   if(MGOn)
   {
    MG.mouseClick(mouseButton,this); //Need to pass refrence to this to chage MGOn
+   if(MGOn == false)
+   {
+	   MG.reset();
+   }
   }
   else
   {
-   VL.mouseClick(mouseButton,this); 
+   VL.mouseClick(mouseButton,this);
   }
 }
 
