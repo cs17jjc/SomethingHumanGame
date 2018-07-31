@@ -16,7 +16,7 @@ class VapourLevel
   PImage[] Icons = new PImage[6];
   PImage[] Lights = new PImage[2];
 
-  ArrayList<PVector> VUP = new ArrayList<PVector>();;
+  ArrayList<PVector> VUP = new ArrayList<PVector>();
   PVector CarSize = new PVector(80, 48);
   PVector CarPos = new PVector(0, 0);
   PVector UILCDMiddle = new PVector(169, 73);
@@ -24,6 +24,8 @@ class VapourLevel
 
   int SelectedButton = 0;
   int CurP = 0;
+  
+  VUMeter V;
 
   void setup() {
     cols = w / scl;
@@ -31,10 +33,10 @@ class VapourLevel
     terrain = new float[cols][rows];
     CarBack = loadImage(dataPath("CarBackRet.png"));
     UpgradeUI = loadImage(dataPath("UpgradeUI.png"));
-    VU = loadImage(dataPath("VUM.png"));
     Lights[0] = loadImage(dataPath("SPDLiG.png"));
     Lights[1] = loadImage(dataPath("SPDLiR.png"));
     AddPoints();
+    V = new VUMeter(new PVector(330,20),0,VUP);
     ChangeCarSize(15);
     File folder = new File(dataPath("Buttons"));
     String[] fileNames = folder.list();
@@ -87,9 +89,8 @@ class VapourLevel
     PVector DoneSize = new PVector(70*2.5, 23*2.5);
     image(Buttons[6], width- DoneSize.x - 8, height/2 - DoneSize.y - 8, DoneSize.x, DoneSize.y);
     
-    image(VU,100,100);
-    stroke(255,0,0);
-    line(100 + 100,109 + 100,VUP.get(CurP).x + 100,VUP.get(CurP).y+100);
+    V.draw();
+    V.DoLerp();
     
   }
 
@@ -98,8 +99,6 @@ class VapourLevel
   {
     if (Button == LEFT)
     {
-      CurP += CurP < VUP.size()-1 ? 1 : -CurP;
-      println(CurP);
       PVector ButtonPos = new PVector(25, 135);
       for (int i =0; i<Buttons.length-1; i++)
       {
