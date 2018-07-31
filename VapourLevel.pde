@@ -16,6 +16,8 @@ class VapourLevel
   PImage[] Icons = new PImage[6];
   PImage[] Lights = new PImage[2];
 
+  int[] DisplayValues = new int[4];
+  ArrayList<VUMeter> Display = new ArrayList<VUMeter>();
   ArrayList<PVector> VUP = new ArrayList<PVector>();
   PVector CarSize = new PVector(80, 48);
   PVector CarPos = new PVector(0, 0);
@@ -24,8 +26,6 @@ class VapourLevel
 
   int SelectedButton = 0;
   int CurP = 0;
-  
-  VUMeter V;
 
   void setup() {
     cols = w / scl;
@@ -36,7 +36,13 @@ class VapourLevel
     Lights[0] = loadImage(dataPath("SPDLiG.png"));
     Lights[1] = loadImage(dataPath("SPDLiR.png"));
     AddPoints();
-    V = new VUMeter(new PVector(330,20),0,VUP);
+
+
+    for (int i = 0; i < DisplayValues.length; i++)
+    {
+      Display.add(new VUMeter(new PVector(330 + i*95, 20), 0, VUP));
+    }
+
     ChangeCarSize(15);
     File folder = new File(dataPath("Buttons"));
     String[] fileNames = folder.list();
@@ -88,10 +94,12 @@ class VapourLevel
     }
     PVector DoneSize = new PVector(70*2.5, 23*2.5);
     image(Buttons[6], width- DoneSize.x - 8, height/2 - DoneSize.y - 8, DoneSize.x, DoneSize.y);
-    
-    V.draw();
-    V.DoLerp();
-    
+
+    for (VUMeter V : Display)
+    {
+      V.draw();
+      V.DoLerp();
+    }
   }
 
 
@@ -215,18 +223,17 @@ class VapourLevel
     }
     popMatrix();
   }
-  
+
   void AddPoints()
   {
-   VUP.add(new PVector(41,51));
-   VUP.add(new PVector(58,38)); 
-   VUP.add(new PVector(77,29)); 
-   VUP.add(new PVector(100,26)); 
-   VUP.add(new PVector(123,29)); 
-   VUP.add(new PVector(142,38)); 
-   VUP.add(new PVector(159,51)); 
+    VUP.add(new PVector(41, 51));
+    VUP.add(new PVector(58, 38)); 
+    VUP.add(new PVector(77, 29)); 
+    VUP.add(new PVector(100, 26)); 
+    VUP.add(new PVector(123, 29)); 
+    VUP.add(new PVector(142, 38)); 
+    VUP.add(new PVector(159, 51));
   }
-  
 }
 
 

@@ -27,8 +27,10 @@ class VUMeter
    translate(Pos.x,Pos.y);
    scale(0.475);
    image(VU,0,0);
+   strokeWeight(5);
    stroke(255,0,0);
    line(100,109,Point.x,Point.y);
+   strokeWeight(1);
    popMatrix();
  }
   
