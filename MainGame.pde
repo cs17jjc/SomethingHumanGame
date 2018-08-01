@@ -30,6 +30,8 @@ class MainGame
   boolean[] Lights = new boolean[9];
   String WarpMessage = "";
 
+  int[][] CarData = new int[6][4];
+
   MainGame(int Width)
   {
     this.Width = Width;
@@ -100,7 +102,7 @@ class MainGame
       if (r.y > Width)
       {
         WarpPlasma.remove(i);
-      } else if (Intersects((int)r.x-WP.width/2 + 3 , (int)r.y-WP.width/2 + 3, 20-6, 20-6, (int)pos.x - car.width/2, (int)(pos.y - yOff - car.height*1.5), 26, 45))
+      } else if (Intersects((int)r.x-WP.width/2 + 3, (int)r.y-WP.width/2 + 3, 20-6, 20-6, (int)pos.x - car.width/2, (int)(pos.y - yOff - car.height*1.5), 26, 45))
       {
         WarpPlasma.remove(i);
         IncLights();
@@ -160,25 +162,23 @@ class MainGame
     if (Keys[0])// key a
     {
       pos.x -= (int)lerp(4, 6, amt);
-      if(pos.x <= car.width)
+      if (pos.x <= car.width)
       {
-       pos.x = car.width; 
-      }
-      else
+        pos.x = car.width;
+      } else
       {
-      rotate(-HALF_PI/4);
+        rotate(-HALF_PI/4);
       }
     }
     if (Keys[1])// key d
     {
       pos.x += (int)lerp(4, 6, amt);
-      if(pos.x >= Width-car.width)
+      if (pos.x >= Width-car.width)
       {
-       pos.x = Width-car.width; 
-      }
-      else
+        pos.x = Width-car.width;
+      } else
       {
-      rotate(HALF_PI/4);
+        rotate(HALF_PI/4);
       }
     }
     if (Keys[2])// key w
@@ -204,9 +204,9 @@ class MainGame
 
 
     image(car, 0, 0);
-    
+
     popMatrix();
-    
+
 
     if (LightCount >= MaxPlasmas)
     {
@@ -307,9 +307,9 @@ class MainGame
 
     case 'd':
       return Keys[1] = b;
-	  
+
     case ESC:
-             key = 0;
+      key = 0;
       return Keys[4] = b;
 
     default:
@@ -346,14 +346,13 @@ class MainGame
     {
       if (Intersects(mouseX, mouseY, 1, 1, Width + 16, height-WD.height + 87, 170, 100))
       {
-        fill(255,0,0);
-      }
-      else
+        fill(255, 0, 0);
+      } else
       {
-       fill(0,255,0); 
+        fill(0, 255, 0);
       }
       textSize(40);
-      text(WarpMessage,Width+37,height-45);
+      text(WarpMessage, Width+37, height-45);
     }
 
 
@@ -376,19 +375,19 @@ class MainGame
     }
   }
 
-  void reset()
+  void reset(int[][] CarD)
   {
-	  amt = 0;
-	  Speed = 10;
-	  pos = new PVector(Width/2, Height/2);
-	  LinesCount = 0;
-	  LightCount = 0;
-	  SpeedCount = 0;
-	  SpeedInc = 0.1;
-	  CurLight = 0;
-	  Lights = new boolean[9];
+    amt = 0;
+    Speed = 10;
+    pos = new PVector(Width/2, Height/2);
+    LinesCount = 0;
+    LightCount = 0;
+    SpeedCount = 0;
+    SpeedInc = 0.1;
+    CurLight = 0;
+    Lights = new boolean[9];
     Keys = new boolean[5];
-	  WarpMessage = "";
+    WarpMessage = "";
+    this.CarData = CarD;
   }
-  
-  }
+}

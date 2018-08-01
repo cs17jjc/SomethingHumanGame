@@ -26,6 +26,8 @@ class VapourLevel
 
   int SelectedButton = 0;
   int CurP = 0;
+  
+  int[][] CarData = new int[6][4];
 
   void setup() {
     cols = w / scl;
@@ -37,25 +39,33 @@ class VapourLevel
     Lights[1] = loadImage(dataPath("SPDLiR.png"));
     AddPoints();
 
+    LoadCar(new int[][]{{0,1,2,0},{3,3,3,3},{2,3,4,5},{0,2,5,6},{3,4,4,3},{5,5,5,5}});
 
     for (int i = 0; i < DisplayValues.length; i++)
     {
       Display.add(new VUMeter(new PVector(330 + i*95, 20), 0, VUP));
     }
 
-    ChangeCarSize(15);
+    ChangeCarSize(15);//edit car size
+    //load images for buttons and icons
     File folder = new File(dataPath("Buttons"));
     String[] fileNames = folder.list();
+    int NoPngOffset = 0;//keep constant idex if files are skipped
     for (int i = 0; i < fileNames.length; i++) 
     {
-      Buttons[i] = loadImage(folder.getPath() +"/"+ fileNames[i]);
+
+      Buttons[NoPngOffset] = loadImage(folder.getPath() +"/"+ fileNames[i]);
+      NoPngOffset+= 1;
     }
     folder = new File(dataPath("Mesh"));
     fileNames = folder.list();
+    NoPngOffset = 0;
     for (int i = 0; i < fileNames.length; i++) 
     {
-      Icons[i] = loadImage(folder.getPath() +"/"+ fileNames[i]);
+      Icons[NoPngOffset] = loadImage(folder.getPath() +"/"+ fileNames[i]);
+      NoPngOffset += 1;
     }
+    UpdateValues();
   }
 
 
@@ -113,6 +123,7 @@ class VapourLevel
         if (Intersects(mouseX, mouseY, 1, 1, (int)ButtonPos.x, (int)ButtonPos.y, 70, 23))
         {
           SelectedButton = i;
+          UpdateValues();
           i = Buttons.length;
         } else
         {
@@ -234,10 +245,24 @@ class VapourLevel
     VUP.add(new PVector(142, 38)); 
     VUP.add(new PVector(159, 51));
   }
+
+  void UpdateValues()
+  {
+    DisplayValues = CarData[SelectedButton];
+    for (int i = 0; i < DisplayValues.length; i++)
+    {
+      Display.get(i).ChangeTarget(DisplayValues[i]);
+    }
+  }
+  
+  void LoadCar(int[][] CD)
+  {
+    CarData = CD;
+  }
+  
+  
+  //----------------------------------------------------
 }
-
-
-
 
 int ColourConv(float i, int max)
 {

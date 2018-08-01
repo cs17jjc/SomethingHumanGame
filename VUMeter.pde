@@ -38,12 +38,9 @@ class VUMeter
   {
     if(abs(PInd - TInd)  != 0 && NextP)
     {
-      println(PInd,TInd);
       PInd += TInd - PInd >= 0 ? 1:-1;
-      println(PInd,TInd);
       NextP = false;
       TargetPoint = Points.get(PInd);
-      println(TargetPoint);
     }
     Point.x = lerp(Point.x,TargetPoint.x,0.15);
     Point.y = lerp(Point.y,TargetPoint.y,0.15);

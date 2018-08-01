@@ -35,14 +35,14 @@ void mousePressed()
   if(MGOn)
   {
    MG.mouseClick(mouseButton,this); //Need to pass refrence to this to chage MGOn
-   if(MGOn == false)
-   {
-	   MG.reset();
-   }
   }
   else
   {
    VL.mouseClick(mouseButton,this);
+   if(MGOn == true)
+   {
+     MG.reset(VL.CarData);
+   }
   }
 }
 
