@@ -43,27 +43,22 @@ class VapourLevel
 
     for (int i = 0; i < DisplayValues.length; i++)
     {
-      Display.add(new VUMeter(new PVector(330 + i*95, 20), 0, VUP));
+      Display.add(new VUMeter(new PVector(330 + i*105, 20), 0, VUP));
     }
 
     ChangeCarSize(15);//edit car size
     //load images for buttons and icons
     File folder = new File(dataPath("Buttons"));
     String[] fileNames = folder.list();
-    int NoPngOffset = 0;//keep constant idex if files are skipped
     for (int i = 0; i < fileNames.length; i++) 
     {
-
-      Buttons[NoPngOffset] = loadImage(folder.getPath() +"/"+ fileNames[i]);
-      NoPngOffset+= 1;
+      Buttons[i] = loadImage(folder.getPath() +"/"+ fileNames[i]);
     }
     folder = new File(dataPath("Mesh"));
     fileNames = folder.list();
-    NoPngOffset = 0;
     for (int i = 0; i < fileNames.length; i++) 
     {
-      Icons[NoPngOffset] = loadImage(folder.getPath() +"/"+ fileNames[i]);
-      NoPngOffset += 1;
+      Icons[i] = loadImage(folder.getPath() +"/"+ fileNames[i]);
     }
     UpdateValues();
   }
@@ -105,10 +100,16 @@ class VapourLevel
     PVector DoneSize = new PVector(70*2.5, 23*2.5);
     image(Buttons[6], width- DoneSize.x - 8, height/2 - DoneSize.y - 8, DoneSize.x, DoneSize.y);
 
-    for (VUMeter V : Display)
+    for (int i = 0; i < Display.size();i++)
     {
-      V.draw();
+      VUMeter V = Display.get(i);
+      boolean Intersect = Intersects(mouseX,mouseY,1,1,(int)V.Pos.x,(int)V.Pos.y,(int)(V.VU.width*0.475),(int)(V.VU.height*0.475));
+      V.draw(Intersect);
       V.DoLerp();
+      if(mousePressed && Intersect)
+      {
+       println(i); 
+      }
     }
   }
 
