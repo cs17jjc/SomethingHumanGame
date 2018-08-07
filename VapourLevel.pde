@@ -29,7 +29,7 @@ class VapourLevel
 
   int[][] CarData = new int[6][4];
 
-  void setup() {
+  void setup(int[][] CarD) {
     cols = w / scl;
     rows = h/ scl;
     terrain = new float[cols][rows];
@@ -37,9 +37,10 @@ class VapourLevel
     UpgradeUI = loadImage(dataPath("UpgradeUI.png"));
     Lights[0] = loadImage(dataPath("SPDLiG.png"));
     Lights[1] = loadImage(dataPath("SPDLiR.png"));
+    CarData = CarD;
     AddPoints();
 
-    LoadCar(new int[][]{{0, 1, 2, 0}, {3, 3, 3, 3}, {2, 3, 4, 5}, {0, 2, 5, 6}, {3, 4, 4, 3}, {5, 5, 5, 5}});
+    //loadCar(new int[][]{{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}});
 
     for (int i = 0; i < DisplayValues.length; i++)
     {
@@ -131,7 +132,7 @@ class VapourLevel
       if (Intersects(mouseX, mouseY, 1, 1, (int)(width- DoneSize.x - 8), (int)(height/2 - DoneSize.y - 8), (int)DoneSize.x, (int)DoneSize.y))
       {
         //Done with upgrades
-        Parent.MGOn = true;
+        ExitUpgrade(Parent);
       }
 
       for (int i = 0; i < Display.size(); i++)
@@ -264,11 +265,22 @@ class VapourLevel
     }
   }
 
-  void LoadCar(int[][] CD)
+  void loadCar(int[][] CD)
   {
     CarData = CD;
+    UpdateValues();
   }
 
+
+
+
+
+  void ExitUpgrade(SomethingH Parent)
+  {
+    //Go back into game (probs a terrible way to do this, will consider fixing)
+    Parent.CarData = CarData;
+    Parent.MGOn = true;
+  }
   //----------------------------------------------------
 }
 

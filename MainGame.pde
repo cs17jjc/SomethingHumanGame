@@ -36,10 +36,11 @@ class MainGame
   {
     this.Width = Width;
     this.Height = Width;
+    
   }
 
 
-  void setup()
+  void setup(int[][] CarD)
   {
     pos = new PVector(Width/2, Height/2);
     //Load assets, should probs put this in initiliser 
@@ -52,6 +53,7 @@ class MainGame
     LightG = loadImage("SPDLiG.png");
     LightR = loadImage("SPDLiR.png");
     WP = loadImage("WarpPlasma.png");
+    this.CarData = CarD;
     for (int y = 0; y < height; y+=90)
     {
       RoadLines.add(new PVector(Width/2, y));
