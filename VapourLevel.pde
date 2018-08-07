@@ -26,7 +26,7 @@ class VapourLevel
 
   int SelectedButton = 0;
   int CurP = 0;
-  
+
   int[][] CarData = new int[6][4];
 
   void setup() {
@@ -39,7 +39,7 @@ class VapourLevel
     Lights[1] = loadImage(dataPath("SPDLiR.png"));
     AddPoints();
 
-    LoadCar(new int[][]{{0,1,2,0},{3,3,3,3},{2,3,4,5},{0,2,5,6},{3,4,4,3},{5,5,5,5}});
+    LoadCar(new int[][]{{0, 1, 2, 0}, {3, 3, 3, 3}, {2, 3, 4, 5}, {0, 2, 5, 6}, {3, 4, 4, 3}, {5, 5, 5, 5}});
 
     for (int i = 0; i < DisplayValues.length; i++)
     {
@@ -100,16 +100,12 @@ class VapourLevel
     PVector DoneSize = new PVector(70*2.5, 23*2.5);
     image(Buttons[6], width- DoneSize.x - 8, height/2 - DoneSize.y - 8, DoneSize.x, DoneSize.y);
 
-    for (int i = 0; i < Display.size();i++)
+    for (int i = 0; i < Display.size(); i++)
     {
       VUMeter V = Display.get(i);
-      boolean Intersect = Intersects(mouseX,mouseY,1,1,(int)V.Pos.x,(int)V.Pos.y,(int)(V.VU.width*0.475),(int)(V.VU.height*0.475));
+      boolean Intersect = Intersects(mouseX, mouseY, 1, 1, (int)V.Pos.x, (int)V.Pos.y, (int)(V.VU.width*0.475), (int)(V.VU.height*0.475));
       V.draw(Intersect);
       V.DoLerp();
-      if(mousePressed && Intersect)
-      {
-       println(i); 
-      }
     }
   }
 
@@ -136,6 +132,18 @@ class VapourLevel
       {
         //Done with upgrades
         Parent.MGOn = true;
+      }
+
+      for (int i = 0; i < Display.size(); i++)
+      {
+        VUMeter V = Display.get(i);
+        boolean Intersect = Intersects(mouseX, mouseY, 1, 1, (int)V.Pos.x, (int)V.Pos.y, (int)(V.VU.width*0.475), (int)(V.VU.height*0.475));
+        if (mousePressed && Intersect)
+        {
+          println("Clicked : " + i);
+          DisplayValues[i] += 1;
+          UpdateValues();
+        }
       }
     }
   }
@@ -255,13 +263,12 @@ class VapourLevel
       Display.get(i).ChangeTarget(DisplayValues[i]);
     }
   }
-  
+
   void LoadCar(int[][] CD)
   {
     CarData = CD;
   }
-  
-  
+
   //----------------------------------------------------
 }
 
